@@ -12,17 +12,16 @@ var menus = [
     items: [
       // { title: "分类管理", path: "/category" },
       { title: "商品类型", path: "/brand" },
-      { title: "商品列表", path: "/list" },
+      { title: "商品列表", path: "/goods" },
       // { title: "规格参数", path: "/specification" }
     ]
   },
   {
     action: "people",
-    title: "会员管理",
+    title: "用户管理",
     path:"/user",
     items: [
-      { title: "会员统计", path: "/statistics" },
-      { title: "会员管理", path: "/list" }
+      { title: "用户统计", path: "/list" }
     ]
   },
   {

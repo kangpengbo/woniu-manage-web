@@ -40,10 +40,10 @@ export default new Router({
         route("/index/dashboard","/Dashboard","Dashboard"),
         route("/item/category",'/item/Category',"Category"),
         route("/item/brand",'/item/Brand',"Brand"),
-        route("/item/list",'/item/Goods',"Goods"),
+        route("/item/goods",'/item/Goods',"Goods"),
         route("/item/specification",'/item/Specification',"Specification"),
-        route("/user/statistics",'/item/Statistics',"Statistics"),
-        route("/trade/promotion",'/trade/Promotion',"Promotion")
+        route("/trade/promotion",'/trade/Promotion',"Promotion"),
+        route("/user/list",'/user/List',"List")
       ]
     }
   ]
