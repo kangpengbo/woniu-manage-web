@@ -74,7 +74,6 @@
 </template>
 
 <script>
-  import {goodsData} from "../../mockDB";
 
   export default {
     name: "item",
@@ -89,18 +88,18 @@
         loading: true,
         pagination: {},// 分页信息
         headers: [// 表头
-          {text: '#', align: 'center', value: 'id'},
-          {text: '账号', align: 'center', value: 'account'},
-          {text: '昵称', align: 'center', value: 'password'},
-          {text: '性别', align: 'center', value: 'sex'},
-          {text: '生日', align: 'center', value: 'birthday'},
-          {text: '电话', align: 'center', value: 'telephone'},
-          {text: '邮箱', align: 'center', value: 'email'},
-          {text: '头像', align: 'center', value: 'head_image'},
-          {text: '身高', align: 'center', value: 'height'},
-          {text: '体重', align: 'center', value: 'weight'},
-          {text: '地址', align: 'center', value: 'city'},
-          {text: '状态', align: 'center', value: 'state'},
+          {text: '#', align: 'center', value: 'id', sortable: false},
+          {text: '账号', align: 'center', value: 'account', sortable: false},
+          {text: '昵称', align: 'center', value: 'password', sortable: false},
+          {text: '性别', align: 'center', value: 'sex', sortable: false},
+          {text: '生日', align: 'center', value: 'birthday', sortable: false},
+          {text: '电话', align: 'center', value: 'telephone', sortable: false},
+          {text: '邮箱', align: 'center', value: 'email', sortable: false},
+          {text: '头像', align: 'center', value: 'head_image', sortable: false},
+          {text: '身高', align: 'center', value: 'height', sortable: false},
+          {text: '体重', align: 'center', value: 'weight', sortable: false},
+          {text: '地址', align: 'center', value: 'city', sortable: false},
+          {text: '状态', align: 'center', value: 'state', sortable: false},
           {text: '操作', align: 'center'}
         ],
         step: 1,// 表单中的导航条
@@ -162,7 +161,8 @@
             });
         }
       },
-      getDataFromApi() {
+      getDataFromApi: function () {
+        this.loading = true;
         var mess = this.search.key;
         var inf = this.search.saleable;
         this.loading = true;

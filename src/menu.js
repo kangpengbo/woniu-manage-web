@@ -25,6 +25,14 @@ var menus = [
     ]
   },
   {
+    action: "comment",
+    title: "话题管理",
+    path:"/topic",
+    items: [
+      { title: "话题统计", path: "/list" }
+    ]
+  },
+  {
     action: "attach_money",
     title: "动态管理",
     path:"/dynamic",
