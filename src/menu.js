@@ -26,13 +26,13 @@ var menus = [
   },
   {
     action: "attach_money",
-    title: "销售管理",
-    path:"/trade",
+    title: "动态管理",
+    path:"/dynamic",
     items: [
-      { title: "交易统计", path: "/statistics" },
-      { title: "订单管理", path: "/order" },
+      { title: "审核动态", path: "/check" }
+      /*{ title: "订单管理", path: "/order" },
       { title: "物流管理", path: "/logistics" },
-      { title: "促销管理", path: "/promotion" }
+      { title: "促销管理", path: "/promotion" }*/
     ]
   },
   {
