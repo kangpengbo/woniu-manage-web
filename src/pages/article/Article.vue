@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-btn @click="addTopic" color="primary">新增话题</v-btn>
+      <v-btn @click="addArticle" color="primary">新增文章</v-btn>
       <v-spacer/>
       <v-text-field
         append-icon="search"
@@ -21,26 +21,31 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.item.topic_id }}</td>
-        <td class="text-xs-center">{{ props.item.topic_title }}</td>
-        <td class="text-xs-center" :title="props.item.topic_content">{{ props.item.topic_content|ellipsis}}</td>
-        <td class="text-xs-center">{{ props.item.topic_views }}</td>
-        <td class="text-xs-center">{{ props.item.topic_likes }}</td>
+        <td class="text-xs-center">{{ props.item.article_id }}</td>
+        <td class="text-xs-center">{{ props.item.article_title }}</td>
+        <td class="text-xs-center" :title="props.item.article_content">{{ props.item.article_content|ellipsis}}</td>
+        <td class="text-xs-center">{{ props.item.article_views }}</td>
+        <td class="text-xs-center">{{ props.item.article_likes }}</td>
         <td class="text-xs-center" style="height: 100px">
-          <img :src="props.item.topic_image" style="height: 100px;width: 150px" alt="图片">
+          <img :src="props.item.article_image" style="height: 100px;width: 150px" alt="图片">
         </td>
         <td class="text-xs-center">{{ dateFormat(props.item.create_time)}}</td>
         <td class="text-xs-center">
-          <label class="el-tag--danger" v-if="props.item.topic_state!=1">失效</label>
+          <label class="el-tag--danger" v-if="props.item.article_state!=1">失效</label>
           <label v-else>有效</label>
         </td>
         <td class="text-xs-center">
-          <v-btn icon small class="el-button--danger" @click="dele(props.item.topic_id,props.item.topic_state)"
-                 v-if="props.item.topic_state==1">
+          <v-btn icon small class="el-button--danger" @click="dele(props.item.article_id,props.item.article_state)"
+                 v-if="props.item.article_state==1">
             撤下
           </v-btn>
-          <v-btn icon small class="info" @click="dele(props.item.topic_id,props.item.topic_state)" v-else>复原</v-btn>
-          <v-btn icon @click="deleteTopic(props.item.topic_id)">
+          <v-btn icon small class="info" @click="dele(props.item.article_id,props.item.article_state)" v-else>复原</v-btn>
+        </td>
+        <td class="text-xs-center">
+          <v-btn icon @click="editArticle(props.item)">
+            <i class="el-icon-edit"/>
+          </v-btn>
+          <v-btn icon @click="deleteArticle(props.item.article_id)">
             <i class="el-icon-delete"/>
           </v-btn>
         </td>
@@ -63,7 +68,7 @@
     <v-dialog v-model="show" max-width="600" scrollable v-if="show">
       <v-card>
         <v-toolbar dark dense color="primary">
-          <v-toolbar-title>{{isEdit ? '修改话题' : '新增话题'}}</v-toolbar-title>
+          <v-toolbar-title>{{isEdit ? '修改文章' : '新增文章'}}</v-toolbar-title>
           <v-spacer/>
           <v-btn icon @click="show = false">
             <v-icon>close</v-icon>
@@ -71,7 +76,7 @@
         </v-toolbar>
         <v-card-text class="px-5 py-2">
           <!-- 表单 -->
-          <topic-form :oldTopic="topic" :isEdit="isEdit" @close="show = false" :reload="getDataFromApi"/>
+          <article-form :oldArticle="article" :isEdit="isEdit" @close="show = false" :reload="getDataFromApi"/>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -80,12 +85,12 @@
 </template>
 
 <script>
-  import TopicForm from './TopicForm'
+  import ArticleForm from './ArticleForm'
 
   export default {
-    name: "topic",
+    name: "article",
     components: {
-      TopicForm
+      ArticleForm
     },
     data() {
       return {
@@ -95,18 +100,19 @@
         loading: true,
         pagination: {},// 分页信息
         headers: [// 表头
-          {text: '话题编号', align: 'center', sortable: false, value: 'topic_id'},
-          {text: '话题标题', align: 'center', sortable: false, value: 'topic_title'},
-          {text: '话题内容', align: 'center', sortable: false, value: 'topic_content'},
-          {text: '浏览量', align: 'center', sortable: false, value: 'topic_views'},
-          {text: '点赞数', align: 'center', sortable: false, value: 'topic_likes'},
-          {text: '图片', align: 'center', sortable: false, value: 'topic_image'},
+          {text: '文章编号', align: 'center', sortable: false, value: 'article_id'},
+          {text: '文章标题', align: 'center', sortable: false, value: 'article_title'},
+          {text: '文章内容', align: 'center', sortable: false, value: 'article_content'},
+          {text: '浏览量', align: 'center', sortable: false, value: 'article_views'},
+          {text: '点赞数', align: 'center', sortable: false, value: 'article_likes'},
+          {text: '图片', align: 'center', sortable: false, value: 'article_image'},
           {text: '发布时间', align: 'center', sortable: false, value: 'create_time'},
-          {text: '状态', align: 'center', sortable: false, value: 'topic_state'},
+          {text: '状态', align: 'center', sortable: false, value: 'article_state'},
+          {text: '修改', align: 'center', sortable: false},
           {text: '操作', align: 'center', sortable: false}
         ],
         show: false,// 是否弹出窗口
-        topic: {}, // 品牌信息
+        article: {}, // 品牌信息
         isEdit: false // 判断是编辑还是新增
       }
     },
@@ -133,42 +139,30 @@
       this.getDataFromApi();
     },
     methods: {
-      addTopic() {
-        this.topic = {};
+      addArticle() {
+        this.article = {};
         this.isEdit = false;
         this.show = true;
       },
       dele(id, stateid) {
-        if (stateid == 1) {
-          if (confirm("确认撤下么？")) {
-            this.$http.get("/item/topic/remove?id=" + id + "&&state=" + stateid)
-              .then(resp => {
-                this.getDataFromApi();
-              })
-              .catch(() => {
-                this.$message.info('已取消撤下');
-              });
-          }
-        } else {
-          if (confirm("确认还原么？")) {
-            this.$http.get("/item/topic/remove?id=" + id + "&&state=" + stateid)
-              .then(resp => {
-                this.getDataFromApi();
-              })
-              .catch(() => {
-                this.$message.info('已取消还原');
-              });
-          }
+        if (confirm("确认修改状态么？")) {
+          this.$http.get("/item/article/operate?id=" + id + "&&state=" + stateid)
+            .then(resp => {
+              this.getDataFromApi();
+            })
+            .catch(() => {
+              this.$message.info('已取消修改');
+            });
         }
       },
       getDataFromApi() {
         this.loading = true;
         var mess = this.search;
         this.loading = true;
-        this.$http.get("/item/topic/list?message=" + mess)
+        this.$http.get("/item/article/list?message=" + mess)
           .then(resp => {
             console.log(resp);
-            this.items = resp.data.map.topiclist;
+            this.items = resp.data.map.articleList;
           })
         this.loading = false;
       },
@@ -182,17 +176,22 @@
         var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
         return year + "-" + month + "-" + day;
       },
-      deleteTopic(id) {
+      deleteArticle(id) {
         if (confirm("确认删除么？")) {
           this.loading = true;
-          this.$http.get("/item/topic/delete?id=" + id)
+          this.$http.get("/item/article/delete?id=" + id)
             .then(resp => {
               alert(resp.data.message);
               this.getDataFromApi();
             })
           this.loading = false;
         }
-      }
+      },
+      editArticle(item) {
+        this.article = item;
+        this.isEdit = true;
+        this.show = true;
+      },
     },
     filters: {
       ellipsis(value) {

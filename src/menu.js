@@ -33,6 +33,14 @@ var menus = [
     ]
   },
   {
+    action: "menu",
+    title: "文章管理",
+    path:"/article",
+    items: [
+      { title: "文章统计", path: "/list" }
+    ]
+  },
+  {
     action: "attach_money",
     title: "动态管理",
     path:"/dynamic",

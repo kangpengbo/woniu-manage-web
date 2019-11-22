@@ -45,7 +45,8 @@ export default new Router({
         route("/trade/promotion",'/trade/Promotion',"Promotion"),
         route("/topic/list",'/topic/Topic',"Topic"),
         route("/user/list",'/user/List',"List"),
-        route("/dynamic/check",'/dynamic/Check',"Check")
+        route("/dynamic/check",'/dynamic/Check',"Check"),
+        route("/article/list",'/article/Article',"Article")
       ]
     }
   ]

@@ -14,6 +14,9 @@
       :counter="30"
       required
     />
+    <v-upload
+      v-model="topic.topic_image" url="/upload/upfile/uploadImg" :multiple="false" :pic-width="250" :pic-height="90"
+    />
     <v-layout class="my-4">
       <v-btn @click="submit" color="primary">提交</v-btn>
       <v-btn @click="clear" color="warning">重置</v-btn>
@@ -43,7 +46,8 @@
         valid: false,
         topic: {
           topic_title: "",
-          topic_content: ""
+          topic_content: "",
+          topic_image: ""
         },
         imageDialogVisible: false
       }
@@ -67,7 +71,8 @@
             url: '/item/topic/add',
             data: {
               "topic_title": this.topic.topic_title,
-              "topic_content" : this.topic.topic_content
+              "topic_content": this.topic.topic_content,
+              "topic_image": this.topic.topic_image
             }
           }).then(resp => {
             // 关闭窗口
