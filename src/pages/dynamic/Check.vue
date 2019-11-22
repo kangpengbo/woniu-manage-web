@@ -1,29 +1,15 @@
 <template>
   <v-card>
     <v-toolbar class="elevation-0">
-      <v-btn @click="addItem" color="primary">新增商品</v-btn>
+      <v-btn @click="addItem" color="primary">审核动态</v-btn>
       <v-spacer/>
-      <v-flex xs3>
-        状态：
-        <v-btn-toggle mandatory v-model="search.saleable">
-          <v-btn flat>
-            全部
-          </v-btn>
-          <v-btn flat :value="true">
-            上架
-          </v-btn>
-          <v-btn flat :value="false">
-            下架
-          </v-btn>
-        </v-btn-toggle>
-      </v-flex>
       <v-flex xs3>
         <v-text-field
           append-icon="search"
           label="搜索"
           single-line
           hide-details
-          v-model="search.key"
+          v-model="search"
         />
       </v-flex>
     </v-toolbar>
@@ -38,7 +24,7 @@
     >
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.item.dynamic_id }}</td>
-        <td class="text-xs-center">{{ props.item.user_id }}</td>
+        <td class="text-xs-center">{{ props.item.user_account }}</td>
         <td class="text-xs-center">{{ props.item.dynamic_content}}</td>
         <td class="text-xs-center" v-if="props.item.state==1"><img :src="props.item.dynamic_image " width="50px"></td>
         <td class="text-xs-center" v-else>/</td>
@@ -97,17 +83,14 @@
     name: "check",
     data() {
       return {
-        search: {
-          key: '',
-          saleable: true,
-        },// 过滤字段
+        search:'',// 过滤字段
         totalItems: 0,// 总条数
         items: [],// 表格数据
         loading: true,
         pagination: {},// 分页信息
         headers: [// 表头
           {text: 'id', align: 'center', value: 'dynamic_id'},
-          {text: '用户id', align: 'center', sortable: false, value: 'user_id'},
+          {text: '用户名', align: 'center', sortable: false, value: 'user_account'},
           {text: '文字内容', align: 'center', sortable: false, value: 'dynamic_content'},
           {text: '图片', align: 'center', value: 'dynamic_image', sortable: true,},
           {text: '视频', align: 'center', value: 'dynamic_video', sortable: false,},
@@ -174,9 +157,10 @@
           });
       },
       getDataFromApi() {
-        var account=this.search.key;
-        this.loading = true;
-        this.$http.get("/item/dynamic/all?account=account")
+        //alert(this.search.key);
+        var account=this.search;
+        //this.loading = true;
+        this.$http.get("/item/dynamic/all?account="+account)
           .then(resp => {
             console.log(resp);
             this.items = resp.data.map.dynamics;
