@@ -12,6 +12,10 @@ import qs from 'qs'
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/material.css'
 
+import axios from 'axios';
+Vue.prototype.$axios = axios;
+axios.defaults.withCredentials=true
+
 Vue.use(Vuetify, { theme: config.theme})
 Vue.use(MyComponent)
 Vue.prototype.$qs = qs;

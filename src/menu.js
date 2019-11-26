@@ -7,12 +7,12 @@ var menus = [
   },
   {
     action: "apps",
-    title: "商品管理",
+    title: "课程管理",
     path:"/item",
     items: [
       // { title: "分类管理", path: "/category" },
-      { title: "商品类型", path: "/brand" },
-      { title: "商品列表", path: "/goods" },
+      { title: "课程列表", path: "/course" },
+      { title: "课程类型", path: "/courseType" },
       // { title: "规格参数", path: "/specification" }
     ]
   },
