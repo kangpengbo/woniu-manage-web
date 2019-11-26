@@ -29,7 +29,9 @@
         <td class="text-xs-center" v-if="props.item.state==1"><img :src="props.item.dynamic_image " width="50px"></td>
         <td class="text-xs-center" v-else>/</td>
         <td class="text-xs-center" v-if="props.item.state==2">
-            <a :href="props.item.dynamic_video">查看视频</a>
+          <video width="100" height="100" controls>
+            <source :src="props.item.dynamic_video" type="video/mp4">
+          </video>
         </td>
         <td class="text-xs-center" v-else>/</td>
         <td class="text-xs-center">{{ props.item.create_time|formatDate}}</td>
