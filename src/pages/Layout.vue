@@ -81,8 +81,8 @@
         <v-icon>invert_colors</v-icon>
       </v-btn>
       <!-- 顶部导航用户菜单 -->
-      <v-btn icon @click="logOut()">
-        <v-icon>account_box</v-icon>
+      <v-btn icon @click="logOut()" class="el-button--danger">
+        注销
       </v-btn>
     </v-toolbar>
     <v-content>
@@ -144,6 +144,7 @@
       logOut(){
         this.$http.get("/item/user/logout")
           .then(() => {
+            localStorage.removeItem('user');
             this.$router.push("/");
           })
           .catch(() => {
