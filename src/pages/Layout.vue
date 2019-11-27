@@ -13,12 +13,13 @@
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar>
-            <v-list-tile-avatar>
+              您好！{{account}}
+           <!--&lt;!&ndash; <v-list-tile-avatar>
               <img src="../assets/2.jpeg">
-            </v-list-tile-avatar>
+            </v-list-tile-avatar>&ndash;&gt;
             <v-list-tile-content>
-              <v-list-tile-title>虎哥</v-list-tile-title>
-            </v-list-tile-content>
+              <v-list-tile-title v-model="account"></v-list-tile-title>
+            </v-list-tile-content>-->
           </v-list-tile>
         </v-list>
       </v-toolbar>
@@ -80,7 +81,7 @@
         <v-icon>invert_colors</v-icon>
       </v-btn>
       <!-- 顶部导航用户菜单 -->
-      <v-btn icon @click.stop="dark = !dark">
+      <v-btn icon @click="logOut()">
         <v-icon>account_box</v-icon>
       </v-btn>
     </v-toolbar>
@@ -107,7 +108,8 @@
         drawer: true,// 左侧导航是否隐藏
         miniVariant: false,// 左侧导航是否收起
         title: '蜗牛商城后台管理',// 顶部导航条名称,
-        menuMap:{}
+        menuMap:{},
+        account:""
       }
     },
     computed: {
@@ -134,8 +136,22 @@
           this.menuMap[p1][i.path.slice(1)] = i.title;
         })
       })
-    }
-  }
+    },
+    mounted() {
+      this.account=localStorage.getItem('user');
+    },
+    methods:{
+      logOut(){
+        this.$http.get("/item/user/logout")
+          .then(() => {
+            this.$router.push("/");
+          })
+          .catch(() => {
+            this.message.info("操作错误");
+          });
+      }
+   }
+ }
 </script>
 
 <style scoped>

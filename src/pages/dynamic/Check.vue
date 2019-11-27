@@ -29,7 +29,7 @@
         <td class="text-xs-center" v-if="props.item.state==1"><img :src="props.item.dynamic_image " width="50px"></td>
         <td class="text-xs-center" v-else>/</td>
         <td class="text-xs-center" v-if="props.item.state==2">
-          <video width="100" height="100" controls>
+          <video width="70" height="70" controls>
             <source :src="props.item.dynamic_video" type="video/mp4">
           </video>
         </td>
