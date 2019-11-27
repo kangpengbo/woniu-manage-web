@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid" ref="courseForm">
+  <v-form  v-model="valid" ref="courseForm">
     <text v-model="brand.course_id"></text>
     <v-text-field
       label="课程名称"
@@ -43,16 +43,22 @@
       v-model="brand.crowd"
       required
     />
-    <v-text-field
-      label="是否免费"
-      v-model="brand.is_pay"
-      required
-    />
-    <v-text-field
-      label="类型"
-      v-model="brand.type_id"
-      required
-    />
+    类型：
+    <select v-model="brand.is_pay" style="width:200px;height: 30px;">
+      <option value="2">请选择</option>
+      <option value="1">收费</option>
+      <option value="0">免费</option>
+    </select>
+    <br><hr style="color: red;"><br>
+    课程类型：
+    <select v-model="brand.type_id" style="width:200px;height: 30px;">
+      <option value="0">请选择</option>
+      <option value="1">瘦身</option>
+      <option value="2">减脂</option>
+      <option value="3">束腰</option>
+      <option value="4">力量锻炼</option>
+    </select>
+    <br><hr style="color: red;"><br>
     <!--<v-cascader url="/item/category/list" required-->
                 <!--v-model="brand.categories"-->
                 <!--multiple label="书籍描述"/>-->
@@ -61,7 +67,7 @@
         <!--<span style="font-size: 16px; color: #444">品牌LOGO：</span>-->
       <!--</v-flex>-->
       <!--<v-flex>-->
-    视频：
+    视频：<br><br>
         <v-upload
           v-model="brand.video" url="/upload/upfile/uploadImg" :multiple="false" :pic-width="250" :pic-height="90"
         />
@@ -93,6 +99,7 @@
       return {
         baseUrl: config.api,
         valid:false,
+
         brand: {
           course_id:"",
           course_name:"",
@@ -104,8 +111,8 @@
           video: "",
           price: "",
           crowd: "",
-          is_pay: "",
-          type_id: "",
+          is_pay: "2",
+          type_id: "0",
           categories: []
         },
         imageDialogVisible:false

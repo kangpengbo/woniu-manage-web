@@ -25,7 +25,7 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.item.course_id }}</td>
         <td class="text-xs-center">{{ props.item.course_name }}</td>
-        <td class="text-xs-center">{{ props.item.introduction}}</td>
+        <td class="text-xs-center">{{ props.item.introduction.substring(0,10)}}...</td>
         <td class="text-xs-center">{{ props.item.course_time }}</td>
         <td class="text-xs-center">{{ props.item.fat_burning}}</td>
         <td class="text-xs-center">{{ props.item.difficulty }}</td>
@@ -33,11 +33,16 @@
         <video width="100" height="100" controls>
           <source :src="props.item.video" type="video/mp4">5
         </video>
-        <td class="text-xs-center">{{ props.item.price }}</td>
+        <td class="text-xs-center">{{ props.item.price }}￥</td>
         <td class="text-xs-center">{{ props.item.crowd }}</td>
-        <td class="text-xs-center">{{ props.item.is_pay }}</td>
-        <td class="text-xs-center">{{ props.item.type_id }}</td>
-        <td class="text-xs-center">{{ props.item.course_state }}</td>
+        <td v-if="props.item.is_pay=='1'" v-text="'付费'" class="text-xs-center"></td>
+        <td v-else="props.item.is_pay!='1'" v-text="'免费'" class="text-xs-center"></td>
+        <td v-if="props.item.type_id=='1'" v-text="'瘦身'" class="text-xs-center"></td>
+        <td v-if="props.item.type_id=='2'" v-text="'减脂'" class="text-xs-center"></td>
+        <td v-if="props.item.type_id=='3'" v-text="'束腰'" class="text-xs-center"></td>
+        <td v-if="props.item.type_id=='4'" v-text="'力量锻炼'" class="text-xs-center"></td>
+        <td v-if="props.item.course_state=='1'" v-text="'上架'" class="text-xs-center"></td>
+        <td v-if="props.item.course_state!='1'" v-text="'下架'" class="text-xs-center"></td>
         <td class="justify-center layout px-0">
           <v-btn icon @click="editBrand(props.item)">
             <i class="el-icon-edit"/>
@@ -213,10 +218,10 @@
         //   this.totalItems = 100
         //   this.loading = false;
         // }, 200)
-        this.$http.get("/item/course/findByName?name="+this.search)
+        this.$http.get("/item/course/list?name="+this.search)
           .then(resp => {
             console.log(resp);
-            this.items = resp.data.map.pageInfo.list;
+            this.items = resp.data;
           })
         this.loading = false;
       }
